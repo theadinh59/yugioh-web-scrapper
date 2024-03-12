@@ -26,7 +26,6 @@ module.exports = async function findCard(searchString) {
     )
     var res = null;
     for (let i = 0; i < cards.length; i++) {
-        console.log(cards[i].name, cards[i].imagePath);
         if(cards[i].name == searchString) {
             res = cards[i];
         }
