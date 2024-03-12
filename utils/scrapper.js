@@ -15,18 +15,24 @@ module.exports = async function findCard(searchString) {
     url = 'https://ygoprodeck.com/card-database/?&name=' + newSearchString + '&num=24&offset=0';
     await page.goto(url);
 
-    await new Promise(r => setTimeout(r, 5000));
+    await new Promise(r => setTimeout(r, 2000));
 
     const cards = await page.evaluate(() => 
         Array.from(document.querySelectorAll('#api-area-results .item-area'), (e) => ({
             name: e.querySelector('.item-name h1').innerText,
             description: e.querySelector('.item-ability p').innerText,
-            imagePath: e.querySelector('.item-img img').src
+            imagePath: e.querySelector('.item-img img').getAttribute('data-src')
         }))
     )
-
     var res = null;
-    if(cards.length != 0) {
+    for (let i = 0; i < cards.length; i++) {
+        console.log(cards[i].name, cards[i].imagePath);
+        if(cards[i].name == searchString) {
+            res = cards[i];
+        }
+    }
+    
+    if(res==null) {
         res = cards[0];
     }
 
